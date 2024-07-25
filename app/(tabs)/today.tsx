@@ -17,6 +17,7 @@ import { isToday, parseISO } from "date-fns";
 import { MaterialIcons } from "@expo/vector-icons";
 import CreationModalforAllScreens from "@/components/CreationModalforAllScreens";
 import { selectLoader } from "@/store/slices/LoaderSlice";
+import Toast from "react-native-toast-message";
 
 const View = styled(RNView);
 const StyledText = styled(Text);
@@ -159,6 +160,7 @@ export default function TodayScreen() {
           </View>
         </Modal>
       </View>
+      <Toast/>
     </View>
   );
 }

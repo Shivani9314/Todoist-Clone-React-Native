@@ -17,6 +17,7 @@ import { AntDesign, MaterialIcons } from "@expo/vector-icons";
 import CreateNewTask from "../components/CreateUpdateModal";
 import { selectLoader } from "@/store/slices/LoaderSlice";
 import { useLocalSearchParams } from "expo-router";
+import Toast from "react-native-toast-message";
 
 const StyledText = styled(Text);
 const View = styled(RNView);
@@ -81,6 +82,7 @@ function ProjectDetailsScreen() {
 
   return (
     <View className="p-6 flex-1 relative gap-5">
+      <Toast/>
       {project && (
         <StyledText className="text-2xl font-bold">{project.name}</StyledText>
       )}

@@ -2,6 +2,7 @@ import { createProject, deleteProjectApi, getProjects } from "@/services/api";
 import { Project } from "@/types";
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import { hideLoader, showLoader } from "./LoaderSlice";
+import showToast from "@/utils/toast";
 
 interface ProjectsState {
   projects: Project[];
@@ -19,6 +20,7 @@ export const fetchProjects = createAsyncThunk(
       const response = await getProjects();
       return response;
     } catch (error) {
+      showToast('error', 'Unable to fetch', 'Please try again.');
       throw new Error((error as Error).message || "Failed to fetch projects");
     } finally {
       dispatch(hideLoader());
@@ -32,8 +34,10 @@ export const createNewProject = createAsyncThunk(
     try {
       dispatch(showLoader());
       const response = await createProject(name);
+      showToast('success', 'Project created Successfully', '');
       return response;
     } catch (error) {
+      showToast('error', 'Unable to create project', 'Please try again.');
       throw new Error((error as Error).message || "Failed to create project");
     } finally {
       dispatch(hideLoader());
@@ -49,6 +53,7 @@ export const deleteProject = createAsyncThunk(
       await deleteProjectApi(id);
       return id;
     } catch (error) {
+      showToast('error', 'Unable to delete project', 'Please try again.');
       throw new Error((error as Error).message || "Failed to delete project");
     } finally {
       dispatch(hideLoader());

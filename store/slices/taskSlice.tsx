@@ -8,6 +8,7 @@ import {
 } from "../../services/api";
 import { Task } from "@/types";
 import { hideLoader, showLoader } from "./LoaderSlice";
+import showToast from "@/utils/toast";
 
 interface TasksState {
   tasks: Task[];
@@ -45,6 +46,7 @@ export const getTasksByProjectId = createAsyncThunk(
       const response = await getTaskByProject(projectId);
       return response;
     } catch (error) {
+      showToast('error', 'Unable to fetch', 'Please try again.');
       console.error("Error fetching tasks:", error);
       throw error;
     } finally {
@@ -61,6 +63,7 @@ export const getAllTasks = createAsyncThunk(
       const response = await getTaskByProject();
       return response;
     } catch (error) {
+      showToast('error', 'Unable to fetch', 'Please try again.');
       console.error("Error fetching all tasks:", error);
       throw error;
     } finally {
@@ -77,6 +80,7 @@ export const completeTask = createAsyncThunk(
       await completeTaskApi(id);
       return id;
     } catch (error) {
+      showToast('error', 'Unable to Complete Task', 'Please try again.');
       console.error("Error completing task:", error);
       throw error;
     } finally {
@@ -100,8 +104,10 @@ export const createNewTask = createAsyncThunk<Task, CreateTaskParams>(
         dueDate,
         priority,
       });
+      showToast('success', 'New Task Created Successfully', 'The task has been successfully deleted.');
       return response;
     } catch (error) {
+      showToast('error', 'Unable to Create Task', 'Please try again.');
       console.error("Error creating task:", error);
       throw error;
     } finally {
@@ -118,6 +124,7 @@ export const deleteTask = createAsyncThunk(
       await deleteTaskApi(id);
       return id;
     } catch (error) {
+      showToast('error', 'Unable to delete task', 'Please try again.');
       throw error;
     } finally {
       dispatch(hideLoader());
