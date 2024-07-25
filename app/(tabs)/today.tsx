@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Text, Modal, View as RNView } from "react-native";
+import { Text, Modal, View as RNView, ActivityIndicator } from "react-native";
 import { styled } from "nativewind";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -13,29 +13,31 @@ import CheckBox from "expo-checkbox";
 import { AppDispatch } from "@/store/store";
 import { AntDesign } from "@expo/vector-icons";
 import { fetchProjects, selectProjects } from "@/store/slices/projectSlice";
-import { isToday, parseISO} from "date-fns";
-import { MaterialIcons } from '@expo/vector-icons';
+import { isToday, parseISO } from "date-fns";
+import { MaterialIcons } from "@expo/vector-icons";
 import CreationModalforAllScreens from "@/components/CreationModalforAllScreens";
+import { selectLoader } from "@/store/slices/LoaderSlice";
 
 const View = styled(RNView);
 const StyledText = styled(Text);
 
 export default function TodayScreen() {
   const tasks = useSelector(selectTasks);
-  const taskById = useSelector(selectTasksById)
+  const taskById = useSelector(selectTasksById);
   const dispatch = useDispatch<AppDispatch>();
   const [completedTasks, setCompletedTasks] = useState<{ [key: string]: boolean }>({});
   const [isModalVisible, setModalVisible] = useState(false);
   const [selectedTask, setSelectedTask] = useState<any>(null);
   const projects = useSelector(selectProjects);
+  const loader = useSelector(selectLoader);
 
   useEffect(() => {
     dispatch(getAllTasks());
-  }, [taskById]);
+  }, [dispatch, taskById]);
 
   useEffect(() => {
     dispatch(fetchProjects());
-  }, []);
+  }, [dispatch]);
 
   const todaysTask = tasks.filter(
     (task) => task.due?.date && isToday(parseISO(task.due?.date))
@@ -75,6 +77,17 @@ export default function TodayScreen() {
 
   return (
     <View className="flex-1 p-4 gap-4">
+      <Modal
+        transparent={true}
+        animationType="none"
+        visible={loader}
+      >
+        <View className="flex-1 justify-center items-center bg-opacity-50">
+          <View className="bg-white p-4 rounded-lg">
+            <ActivityIndicator size="large" color="red" />
+          </View>
+        </View>
+      </Modal>
       <StyledText className="text-xl font-bold">Today's Tasks</StyledText>
       <View className="w-full">
         {todaysTask.length > 0 ? (
@@ -88,7 +101,9 @@ export default function TodayScreen() {
                 onValueChange={() => handleCheckboxClick(task.id)}
               />
               <View className="ml-3 flex-1">
-                <StyledText className="font-semibold">{task.content}</StyledText>
+                <StyledText className="font-semibold">
+                  {task.content}
+                </StyledText>
                 {task.description && (
                   <StyledText className="text-gray-500">
                     {task.description}
@@ -97,13 +112,24 @@ export default function TodayScreen() {
                 <StyledText className="text-gray-400">
                   Priority: {task.priority}
                 </StyledText>
-                <StyledText># {projectName(task.projectId.toString())}</StyledText>
+                <StyledText>
+                  # {projectName(task.projectId.toString())}
+                </StyledText>
               </View>
-              <View>
-                <MaterialIcons onPress={() => handleEditTask(task)} name="edit" size={24} color="red" />
-              </View>
-              <View>
-                <MaterialIcons onPress={() => handleDeleteTask(task.id)} name="delete" size={24} color="red" />
+              <View className="flex flex-row items-center">
+                <MaterialIcons
+                  onPress={() => handleEditTask(task)}
+                  name="edit"
+                  size={24}
+                  color="red"
+                  className="mr-2"
+                />
+                <MaterialIcons
+                  onPress={() => handleDeleteTask(task.id)}
+                  name="delete"
+                  size={24}
+                  color="red"
+                />
               </View>
             </View>
           ))
@@ -116,19 +142,19 @@ export default function TodayScreen() {
           name="pluscircle"
           size={54}
           color="red"
-          onPress={() => openModal(selectedTask)}
+          onPress={() => openModal()}
         />
         <Modal
           visible={isModalVisible}
           transparent={true}
           animationType="slide"
         >
-          <View className="flex-1 justify-center items-center bg-white-800 bg-opacity-100">
+          <View className="flex-1 justify-center items-center bg-black bg-opacity-50">
             <CreationModalforAllScreens
               closeModal={closeModal}
               task={selectedTask}
               todaysdate={new Date()}
-              screen = {"today"}
+              screen="today"
             />
           </View>
         </Modal>

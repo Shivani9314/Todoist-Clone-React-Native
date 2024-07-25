@@ -53,7 +53,7 @@ export const getTaskByProject = async (id?: string): Promise<Task[]> => {
             date: task.due.date,
             datetime: task.due.datetime ?? "", // Ensure datetime is a string, or default to an empty string if undefined
           }
-        : undefined, // Ensure due is undefined if task.due is null or undefined
+        : undefined, 
       description: task.description || "",
       lable: task.labels || [],
       priority: task.priority,

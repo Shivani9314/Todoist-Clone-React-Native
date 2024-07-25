@@ -11,22 +11,22 @@ import { hideLoader, showLoader } from "./LoaderSlice";
 
 interface TasksState {
   tasks: Task[];
-  tasksById:Task[];
+  tasksById: Task[];
 }
 
 const initialState: TasksState = {
   tasks: [],
-  tasksById :[],
+  tasksById: [],
 };
 
 interface CreateTaskParams {
-    content: string;
-    projectId: string;
-    lable?: string[];
-    description?: string | null;
-    dueDate: string | undefined;
-    priority?: number;
-};
+  content: string;
+  projectId: string;
+  lable?: string[];
+  description?: string | null;
+  dueDate: string | undefined;
+  priority?: number;
+}
 
 interface UpdateTaskParams {
   id: string;
@@ -86,48 +86,67 @@ export const completeTask = createAsyncThunk(
 );
 
 export const createNewTask = createAsyncThunk<Task, CreateTaskParams>(
-    "tasks/createNewTask",
-    async ({ content, projectId, lable, description, dueDate, priority }, {dispatch}) => {
-      try {
-        const response = await createNewTaskApi({
-          content,
-          projectId,
-          lable,
-          description,
-          dueDate,
-          priority,
-        });
-        return response;
-      } catch (error) {
-        console.error("Error creating task:", error);
-        throw error;
-      }finally{
-        dispatch(hideLoader())
-      }
+  "tasks/createNewTask",
+  async (
+    { content, projectId, lable, description, dueDate, priority },
+    { dispatch }
+  ) => {
+    try {
+      const response = await createNewTaskApi({
+        content,
+        projectId,
+        lable,
+        description,
+        dueDate,
+        priority,
+      });
+      return response;
+    } catch (error) {
+      console.error("Error creating task:", error);
+      throw error;
+    } finally {
+      dispatch(hideLoader());
     }
-  );
-
-export const deleteTask = createAsyncThunk('tasks/deleteTask' , async(id:string) =>{
-    await deleteTaskApi(id);
-    return id;
-})
-
-export const updateTask = createAsyncThunk<Task, UpdateTaskParams>(
-  'tasks/updateTask',
-  async ({ id, content, lable, description, dueDate, priority }) => {
-    const reponse = await updateTaskApi({
-      id,
-      content,
-      lable,
-      description,
-      dueDate,
-      priority,
-    });
-    return reponse;
   }
 );
 
+export const deleteTask = createAsyncThunk(
+  "tasks/deleteTask",
+  async (id: string, { dispatch }) => {
+    try {
+      dispatch(showLoader());
+      await deleteTaskApi(id);
+      return id;
+    } catch (error) {
+      throw error;
+    } finally {
+      dispatch(hideLoader());
+    }
+  }
+);
 
+export const updateTask = createAsyncThunk<Task, UpdateTaskParams>(
+  "tasks/updateTask",
+  async ({ id, content, lable, description, dueDate, priority },{dispatch}) => {
+    try{
+      dispatch(showLoader())
+      const reponse = await updateTaskApi({
+        id,
+        content,
+        lable,
+        description,
+        dueDate,
+        priority,
+      });
+      return reponse;
+    }
+    catch(error){
+      throw error
+    }finally{
+      dispatch(hideLoader())
+    }
+  }
+);
 
 const taskSlice = createSlice({
   name: "tasks",
@@ -155,26 +174,34 @@ const taskSlice = createSlice({
           state.tasksById.push(action.payload);
         }
       )
-      .addCase(deleteTask.fulfilled, (state, action:PayloadAction<string>) =>{
-        state.tasksById = state.tasksById.filter((task) => task.id !== action.payload);
+      .addCase(deleteTask.fulfilled, (state, action: PayloadAction<string>) => {
+        state.tasksById = state.tasksById.filter(
+          (task) => task.id !== action.payload
+        );
       })
-      .addCase(getAllTasks.fulfilled, (state, action:PayloadAction<Task[]>) =>{
-        state.tasks = action.payload;
-      })
-    
+      .addCase(
+        getAllTasks.fulfilled,
+        (state, action: PayloadAction<Task[]>) => {
+          state.tasks = action.payload;
+        }
+      )
+
       .addCase(updateTask.fulfilled, (state, action: PayloadAction<Task>) => {
-        let index = state.tasksById.findIndex(task => task.id === action.payload.id);
+        let index = state.tasksById.findIndex(
+          (task) => task.id === action.payload.id
+        );
         if (index !== -1) {
           state.tasksById[index] = action.payload;
         }
-        index = state.tasks.findIndex(task => task.id === action.payload.id);
+        index = state.tasks.findIndex((task) => task.id === action.payload.id);
         if (index !== -1) {
           state.tasks[index] = action.payload;
         }
-      })
+      });
   },
 });
 
 export const selectTasks = (state: { tasks: TasksState }) => state.tasks.tasks;
-export const selectTasksById = (state: { tasks: TasksState }) => state.tasks.tasksById;
+export const selectTasksById = (state: { tasks: TasksState }) =>
+  state.tasks.tasksById;
 export default taskSlice.reducer;
