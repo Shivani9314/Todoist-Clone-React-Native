@@ -144,7 +144,7 @@ const taskSlice = createSlice({
       .addCase(
         completeTask.fulfilled,
         (state, action: PayloadAction<string>) => {
-          state.tasks = state.tasks.filter(
+          state.tasksById = state.tasksById.filter(
             (task) => task.id !== action.payload
           );
         }
