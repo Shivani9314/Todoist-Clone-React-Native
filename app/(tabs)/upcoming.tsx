@@ -3,13 +3,13 @@ import { Text, Modal, ActivityIndicator } from "react-native";
 import { styled } from "nativewind";
 import { View as RNView } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
-import { completeTask, getAllTasks, selectTasks } from "@/store/slices/taskSlice";
+import { completeTask, getAllTasks, selectTasks } from "@/slices/taskSlice";
 import { AppDispatch } from "@/store/store";
 import CheckBox from "expo-checkbox";
 import { isToday, parseISO } from "date-fns";
 import { AntDesign } from "@expo/vector-icons";
 import CreationModalforAllScreens from "@/components/CreationModalforAllScreens";
-import { selectLoader } from "@/store/slices/LoaderSlice";
+import { selectLoader } from "@/slices/LoaderSlice";
 import Toast from "react-native-toast-message";
 
 const View = styled(RNView);

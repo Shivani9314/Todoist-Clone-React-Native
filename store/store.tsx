@@ -1,7 +1,7 @@
 import { configureStore } from '@reduxjs/toolkit';
-import projectsReducer from './slices/projectSlice';
-import taskreducer from './slices/taskSlice'
-import loaderReducer from "@/store/slices/LoaderSlice";
+import projectsReducer from '../slices/projectSlice';
+import taskreducer from '../slices/taskSlice'
+import loaderReducer from "@/slices/LoaderSlice";
 
 export const store = configureStore({
   reducer: {

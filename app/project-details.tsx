@@ -8,14 +8,14 @@ import {
   deleteTask,
   getTasksByProjectId,
   selectTasksById,
-} from "@/store/slices/taskSlice";
+} from "@/slices/taskSlice";
 import { AppDispatch } from "@/store/store";
-import { selectProjects } from "@/store/slices/projectSlice";
+import { selectProjects } from "@/slices/projectSlice";
 import CheckBox from "expo-checkbox";
 import { format, isToday, isTomorrow, isThisWeek, parseISO } from "date-fns";
 import { AntDesign, MaterialIcons } from "@expo/vector-icons";
 import CreateNewTask from "../components/CreateUpdateModal";
-import { selectLoader } from "@/store/slices/LoaderSlice";
+import { selectLoader } from "@/slices/LoaderSlice";
 import { useLocalSearchParams } from "expo-router";
 import Toast from "react-native-toast-message";
 

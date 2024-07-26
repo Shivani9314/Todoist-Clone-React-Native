@@ -12,7 +12,7 @@ import { AppDispatch } from "@/store/store";
 import {
   createNewTask as createNewTaskAction,
   updateTask,
-} from "@/store/slices/taskSlice";
+} from "@/slices/taskSlice";
 import { styled } from "nativewind";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import DropDownPicker from "react-native-dropdown-picker";

@@ -3,13 +3,13 @@ import { Text, TextInput, ActivityIndicator } from "react-native";
 import { styled } from "nativewind";
 import { View as RNView, ScrollView, Modal } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
-import { selectProjects } from "@/store/slices/projectSlice";
-import { completeTask, selectTasks } from "@/store/slices/taskSlice";
+import { selectProjects } from "@/slices/projectSlice";
+import { completeTask, selectTasks } from "@/slices/taskSlice";
 import { useRouter } from "expo-router";
 import { AntDesign } from "@expo/vector-icons";
 import CreationModalforAllScreens from "@/components/CreationModalforAllScreens";
 import CheckBox from "expo-checkbox";
-import { selectLoader } from "@/store/slices/LoaderSlice";
+import { selectLoader } from "@/slices/LoaderSlice";
 
 const View = styled(RNView);
 const StyledText = styled(Text);

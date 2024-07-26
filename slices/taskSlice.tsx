@@ -5,7 +5,7 @@ import {
   deleteTaskApi,
   getTaskByProject,
   updateTaskApi,
-} from "../../services/api";
+} from "../services/api";
 import { Task } from "@/types";
 import { hideLoader, showLoader } from "./LoaderSlice";
 import showToast from "@/utils/toast";

@@ -8,15 +8,15 @@ import {
   completeTask,
   deleteTask,
   selectTasksById,
-} from "@/store/slices/taskSlice";
+} from "@/slices/taskSlice";
 import CheckBox from "expo-checkbox";
 import { AppDispatch } from "@/store/store";
 import { AntDesign } from "@expo/vector-icons";
-import { fetchProjects, selectProjects } from "@/store/slices/projectSlice";
+import { fetchProjects, selectProjects } from "@/slices/projectSlice";
 import { isToday, parseISO } from "date-fns";
 import { MaterialIcons } from "@expo/vector-icons";
 import CreationModalforAllScreens from "@/components/CreationModalforAllScreens";
-import { selectLoader } from "@/store/slices/LoaderSlice";
+import { selectLoader } from "@/slices/LoaderSlice";
 import Toast from "react-native-toast-message";
 
 const View = styled(RNView);
